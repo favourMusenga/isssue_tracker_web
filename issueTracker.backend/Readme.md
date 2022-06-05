@@ -14,15 +14,36 @@ This is the backtend of the app. It helps Zesco to keep track of issues with the
 
 ## Installation Guide
 
-Coming soon!!!
+> NOTE: The app doesn't follow the best security practice.
+
+- Clone the repo
+
+```bash
+git clone https://github.com/favourMusenga/isssue_tracker_web.git
+```
+
+- Make sure you have maven installed on your workspace. To check if maven is installed, run the following command in the terminal: 
+
+```bash
+mvn -version
+```
+
+- Open the project in your IDE of choice. This was tested using IntelliJ IDEA 2022.1.1 (Ultimate Edition)
+
+- Make all the dependencies are installed before running the project.
+
+- Run the project.
+
+- Server should be running on localhost:8080
+
 
 ## TODO
 
 - [x] Initial Structure
 - [ ] Adding roles of users
 - [ ] Adding users
-- [ ] Getting all appUser
-- [ ] User Authentication
+- [x] Getting all users
+- [x] User Authentication
 - [ ] Adding Location
 - [ ] Getting all location
 - [ ] Adding Equipment
