@@ -21,7 +21,7 @@ public class Equipment {
     @Column(nullable = false)
     private String description;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(nullable = false, referencedColumnName = "id")
     private Location location;
 

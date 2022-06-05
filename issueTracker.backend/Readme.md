@@ -21,7 +21,7 @@ Coming soon!!!
 - [x] Initial Structure
 - [ ] Adding roles of users
 - [ ] Adding users
-- [ ] Getting all user
+- [ ] Getting all appUser
 - [ ] User Authentication
 - [ ] Adding Location
 - [ ] Getting all location

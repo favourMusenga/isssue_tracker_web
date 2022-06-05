@@ -2,7 +2,7 @@ package com.favourmusenga.issuetracker.inspection;
 
 import com.favourmusenga.issuetracker.equipment.Equipment;
 import com.favourmusenga.issuetracker.status.Status;
-import com.favourmusenga.issuetracker.user.User;
+import com.favourmusenga.issuetracker.appuser.AppUser;
 import lombok.AllArgsConstructor;
 
 import lombok.Data;
@@ -27,11 +27,11 @@ public class Inspection {
     @Column(nullable = false)
     private String date;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false, referencedColumnName = "id")
-    private User user;
+    private AppUser appUser;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "status_id",
             nullable = false,
@@ -39,7 +39,7 @@ public class Inspection {
     )
     private Status status;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "equipment_id",
             nullable = false,
@@ -47,10 +47,10 @@ public class Inspection {
     )
     private Equipment equipment;
 
-    public Inspection(String comment, String date, User user, Status status, Equipment equipment) {
+    public Inspection(String comment, String date, AppUser appUser, Status status, Equipment equipment) {
         Comment = comment;
         this.date = date;
-        this.user = user;
+        this.appUser = appUser;
         this.status = status;
         this.equipment = equipment;
     }

@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.RestController;
 
 @RequiredArgsConstructor
-@RestController("/equipment")
+@RestController("/api/equipment")
 public class EquipmentController {
     private final EquipmentService equipmentService;
 }
