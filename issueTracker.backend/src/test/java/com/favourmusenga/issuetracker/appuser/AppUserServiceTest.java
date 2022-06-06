@@ -1,24 +1,129 @@
 package com.favourmusenga.issuetracker.appuser;
 
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
+import com.favourmusenga.issuetracker.role.Role;
+import com.favourmusenga.issuetracker.role.RoleRepository;
+import com.favourmusenga.issuetracker.shared.exceptions.BadRequestException;
+import com.favourmusenga.issuetracker.shared.exceptions.NotFoundException;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.List;
-
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.BDDMockito.given;
+import static org.mockito.Mockito.*;
 
-@SpringBootTest
+@ExtendWith(MockitoExtension.class)
 class AppUserServiceTest {
-    @Autowired
-    AppUserService appUserService;
+
+    private AppUserService underTest;
+
+    @Mock
+    private RoleRepository roleRepository;
+
+    @Mock
+    private AppUserRepository appUserRepository;
+
+    @Mock
+    private PasswordEncoder passwordEncoder;
+
+    @BeforeEach
+    void setUp() {
+        underTest = new AppUserService(appUserRepository, passwordEncoder);
+    }
+
+
 
     @Test
-    @DisplayName("list of users")
-    void getAllUserTest() {
-        List<AppUser> listOfUsers = appUserService.getAllUser();
+    @DisplayName("Can add user")
+    void canSaveUser() throws BadRequestException {
 
-        assertTrue(listOfUsers.size() >= 0);
+        //given
+        given(roleRepository.save(any())).willReturn(new Role(1L,"Inspector"));
+        Role role = roleRepository.save(new Role("Inspector"));
+
+        AppUser mockAppUser = new AppUser("moses@gmail.com", "test1234", new UserName("moses",null, "banda"), role);
+
+        // when
+        underTest.saveUser(mockAppUser);
+
+        // then
+        ArgumentCaptor<AppUser> appUserArgumentCaptor = ArgumentCaptor.forClass(AppUser.class);
+
+        verify(appUserRepository).save(appUserArgumentCaptor.capture());
+
+        AppUser capturedAppUser = appUserArgumentCaptor.getValue();
+
+        assertThat(capturedAppUser).isEqualTo(mockAppUser);
+    }
+
+    @Test
+    @DisplayName("Can't add user")
+    void willThrowErrorWhenEmailExist()  {
+
+        //given
+        given(roleRepository.save(new Role("Inspector"))).willReturn(new Role(1L,"Inspector"));
+        Role role = roleRepository.save(new Role("Inspector"));
+
+        AppUser mockAppUser = new AppUser("moses@gmail.com", "test1234", new UserName("moses",null, "banda"), role);
+
+        // when
+        // then
+        given(appUserRepository.findByEmail(anyString())).willReturn(new AppUser("moses@gmail.com", "test1234", new UserName("moses",null, "banda"), role));
+
+        assertThatThrownBy(() -> underTest.saveUser(mockAppUser))
+                .isInstanceOf(BadRequestException.class)
+                .hasMessageContaining("Email already exist");
+
+        verify(appUserRepository,never()).save(any());
+    }
+
+
+    @Test
+    @DisplayName("get user by email")
+    void canGetUser() throws NotFoundException {
+        //given
+        given(roleRepository.save(new Role("Inspector"))).willReturn(new Role(1L,"Inspector"));
+        Role role = roleRepository.save(new Role("Inspector"));
+        String mockEmail = "moses@gmail.com";
+
+        AppUser mockUser = new AppUser("moses@gmail.com", "test1234", new UserName("moses",null, "banda"), role);
+
+        given(appUserRepository.findByEmail(anyString())).willReturn(mockUser);
+
+        //when
+        AppUser expected = underTest.getUser(mockEmail);
+
+        assertThat(mockUser).isEqualTo(expected);
+    }
+
+    @Test
+    @DisplayName("will not user by email")
+    void willThrowAnErrorEmailNotExists() {
+        //given
+        String mockEmail = "moses@gmail.com";
+
+        // when
+        // then
+
+        //when
+        assertThatThrownBy(()->underTest.getUser(mockEmail))
+                .isInstanceOf(NotFoundException.class)
+                .hasMessageContaining("user does not exist");
+    }
+
+    @Test
+    @DisplayName("get all users")
+    void getAllUser() {
+        // when
+        underTest.getAllUser();
+        // then
+        verify(appUserRepository).findAll();
     }
 }

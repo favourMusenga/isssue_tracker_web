@@ -25,16 +25,4 @@ public class IssuetrackerApplication {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	public CommandLineRunner run(AppUserService appUserService, RoleService roleService){
-		return args ->{
-			Role inspectorRole = roleService.saveNewRole(new Role("Inspector"));
-			Role supervisorRole = roleService.saveNewRole(new Role("Supervisor"));
-
-			appUserService.saveUser(new AppUser("favour@gmail.com","test1234",new UserName("favour",null , "musenga"),supervisorRole));
-			appUserService.saveUser(new AppUser("mary@gmail.com","test1234",new UserName("mary",  "chanda","banda"),inspectorRole));
-			appUserService.saveUser(new AppUser("jane@gmail.com","test1234",new UserName("favour", null,"doe"),supervisorRole));
-			appUserService.saveUser(new AppUser("john@gmail.com","test1234",new UserName("favour", null,"doe"),inspectorRole));
-		};
-	}
 }

@@ -6,13 +6,14 @@ import lombok.*;
 import javax.persistence.*;
 
 @Entity
-@Table(name = "user")
+@Table(name = "app_user")
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(nullable = false)
     private Long id;
     @Column(unique = true, nullable = false)
     private String email;
@@ -22,7 +23,7 @@ public class AppUser {
     private UserName userName;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "role_id", referencedColumnName = "id", nullable = false)
+    @JoinColumn(name = "role_id", referencedColumnName = "id",nullable = false)
     private Role role;
 
     public AppUser(String email, String password, UserName userName, Role statusID) {
