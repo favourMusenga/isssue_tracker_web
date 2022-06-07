@@ -2,8 +2,8 @@ package com.favourmusenga.issuetracker.appuser;
 
 import com.favourmusenga.issuetracker.role.Role;
 import com.favourmusenga.issuetracker.role.RoleRepository;
-import com.favourmusenga.issuetracker.shared.exceptions.BadRequestException;
-import com.favourmusenga.issuetracker.shared.exceptions.NotFoundException;
+import com.favourmusenga.issuetracker.shared.exceptions.CustomBadRequestException;
+import com.favourmusenga.issuetracker.shared.exceptions.CustomNotFoundException;
 import org.junit.jupiter.api.*;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.ArgumentCaptor;
@@ -13,7 +13,6 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.given;
@@ -42,7 +41,7 @@ class AppUserServiceTest {
 
     @Test
     @DisplayName("Can add user")
-    void canSaveUser() throws BadRequestException {
+    void canSaveUser() throws CustomBadRequestException {
 
         //given
         given(roleRepository.save(any())).willReturn(new Role(1L,"Inspector"));
@@ -78,7 +77,7 @@ class AppUserServiceTest {
         given(appUserRepository.findByEmail(anyString())).willReturn(new AppUser("moses@gmail.com", "test1234", new UserName("moses",null, "banda"), role));
 
         assertThatThrownBy(() -> underTest.saveUser(mockAppUser))
-                .isInstanceOf(BadRequestException.class)
+                .isInstanceOf(CustomBadRequestException.class)
                 .hasMessageContaining("Email already exist");
 
         verify(appUserRepository,never()).save(any());
@@ -87,7 +86,7 @@ class AppUserServiceTest {
 
     @Test
     @DisplayName("get user by email")
-    void canGetUser() throws NotFoundException {
+    void canGetUser() throws CustomNotFoundException {
         //given
         given(roleRepository.save(new Role("Inspector"))).willReturn(new Role(1L,"Inspector"));
         Role role = roleRepository.save(new Role("Inspector"));
@@ -114,7 +113,7 @@ class AppUserServiceTest {
 
         //when
         assertThatThrownBy(()->underTest.getUser(mockEmail))
-                .isInstanceOf(NotFoundException.class)
+                .isInstanceOf(CustomNotFoundException.class)
                 .hasMessageContaining("user does not exist");
     }
 

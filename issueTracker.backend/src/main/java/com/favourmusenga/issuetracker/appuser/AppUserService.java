@@ -1,7 +1,7 @@
 package com.favourmusenga.issuetracker.appuser;
 
-import com.favourmusenga.issuetracker.shared.exceptions.BadRequestException;
-import com.favourmusenga.issuetracker.shared.exceptions.NotFoundException;
+import com.favourmusenga.issuetracker.shared.exceptions.CustomBadRequestException;
+import com.favourmusenga.issuetracker.shared.exceptions.CustomNotFoundException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -38,21 +38,21 @@ public class AppUserService implements IAppUserService, UserDetailsService {
     }
 
     @Override
-    public void saveUser(AppUser appUser) throws BadRequestException {
+    public void saveUser(AppUser appUser) throws CustomBadRequestException {
         AppUser emailExists = appUserRepository.findByEmail(appUser.getEmail());
         if (emailExists != null){
-            throw new BadRequestException("Email already exist");
+            throw new CustomBadRequestException("Email already exist");
         }
         appUser.setPassword(passwordEncoder.encode(appUser.getPassword()));
         appUserRepository.save(appUser);
     }
 
     @Override
-    public AppUser getUser(String email) throws NotFoundException {
+    public AppUser getUser(String email) throws CustomNotFoundException {
         AppUser user = appUserRepository.findByEmail(email);
 
         if(user == null){
-            throw new NotFoundException("user does not exist");
+            throw new CustomNotFoundException("user does not exist");
         }
         return user;
     }
