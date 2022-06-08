@@ -1,7 +1,10 @@
 package com.favourmusenga.issuetracker.equipment;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.favourmusenga.issuetracker.location.Location;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -10,6 +13,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Equipment {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

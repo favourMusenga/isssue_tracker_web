@@ -1,5 +1,6 @@
 package com.favourmusenga.issuetracker.appuser;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.favourmusenga.issuetracker.role.Role;
 import lombok.*;
@@ -11,6 +12,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

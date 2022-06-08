@@ -1,5 +1,6 @@
 package com.favourmusenga.issuetracker.inspection;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.favourmusenga.issuetracker.equipment.Equipment;
 import com.favourmusenga.issuetracker.status.Status;
 import com.favourmusenga.issuetracker.appuser.AppUser;
@@ -16,6 +17,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Inspection {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

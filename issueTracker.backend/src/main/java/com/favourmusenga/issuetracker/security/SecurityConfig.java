@@ -38,8 +38,8 @@ public class SecurityConfig {
         http.authorizeHttpRequests()
                 .antMatchers(HttpMethod.POST,"/api/location").permitAll()
                 .antMatchers(HttpMethod.POST,"/api/role").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/user").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/role").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/user").permitAll()
                 .anyRequest().authenticated();
         http.apply(MyCustomDsl.myCustomDsl());
 

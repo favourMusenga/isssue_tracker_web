@@ -1,5 +1,6 @@
 package com.favourmusenga.issuetracker.status;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
 
 import javax.persistence.*;
@@ -9,6 +10,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class Status {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
