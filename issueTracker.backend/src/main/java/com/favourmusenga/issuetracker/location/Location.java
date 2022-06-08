@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 
 @Entity
 @Table
@@ -18,13 +19,16 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false, unique = true)
+    @NotNull
+    @Column(nullable = false)
     private String physicalAddress;
 
+    @NotNull
     @Column(nullable = false)
     private Integer zone;
 
-    @Column(nullable = false)
+    @NotNull
+    @Column(nullable = false, length = 50)
     private String town;
 
     public Location(String physicalAddress, Integer zone, String town) {
