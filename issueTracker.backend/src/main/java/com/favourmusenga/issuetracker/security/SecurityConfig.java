@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -34,7 +35,12 @@ public class SecurityConfig {
 
         http.csrf().disable();
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http.authorizeHttpRequests().anyRequest().authenticated();
+        http.authorizeHttpRequests()
+                .antMatchers(HttpMethod.POST,"/api/location").permitAll()
+                .antMatchers(HttpMethod.POST,"/api/role").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/user").permitAll()
+                .antMatchers(HttpMethod.GET,"/api/role").permitAll()
+                .anyRequest().authenticated();
         http.apply(MyCustomDsl.myCustomDsl());
 
         return http.build();

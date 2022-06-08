@@ -1,5 +1,6 @@
 package com.favourmusenga.issuetracker.appuser;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.favourmusenga.issuetracker.role.Role;
 import lombok.*;
 
@@ -15,10 +16,14 @@ public class AppUser {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(nullable = false)
     private Long id;
+
     @Column(unique = true, nullable = false)
     private String email;
+
     @Column(nullable = false)
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     private String password;
+
     @Column(name = "username", nullable = false)
     private UserName userName;
 
