@@ -48,7 +48,7 @@ public class AppUserService implements IAppUserService, UserDetailsService {
     }
 
     @Override
-    public AppUser getUser(String email) throws CustomNotFoundException {
+    public AppUser getUserByEmail(String email) throws CustomNotFoundException {
         AppUser user = appUserRepository.findByEmail(email);
 
         if(user == null){

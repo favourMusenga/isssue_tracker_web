@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface IEquipmentService {
     List<Equipment> getAllEquipment();
-    Equipment getEquipmentId(Long id);
+    Equipment getEquipmentById(Long id);
     void saveEquipment(Equipment equipment);
 }

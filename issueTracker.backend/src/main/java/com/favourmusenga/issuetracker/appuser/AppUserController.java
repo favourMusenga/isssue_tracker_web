@@ -39,6 +39,6 @@ public class AppUserController {
 
     @GetMapping
     ResponseEntity<CustomResponseBody<AppUser>> getUser(@RequestParam(name = "email") String email) throws CustomNotFoundException {
-        return ResponseEntity.ok().body(new CustomResponseBody<>(OK.value(),userService.getUser(email)));
+        return ResponseEntity.ok().body(new CustomResponseBody<>(OK.value(),userService.getUserByEmail(email)));
     }
 }

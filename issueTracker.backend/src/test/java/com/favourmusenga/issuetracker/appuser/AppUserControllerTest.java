@@ -22,8 +22,6 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
-import static org.springframework.test.web.servlet.setup.MockMvcBuilders.*;
-
 
 
 @WebMvcTest(controllers = AppUserController.class, excludeAutoConfiguration = {SecurityAutoConfiguration.class})
@@ -96,7 +94,7 @@ class AppUserControllerTest {
     @Test
     @DisplayName("get user")
     void shouldGetUserInformationByEmail() throws Exception {
-        when(appUserService.getUser(appUser1.getEmail())).thenReturn(appUser1);
+        when(appUserService.getUserByEmail(appUser1.getEmail())).thenReturn(appUser1);
         mockMvc.perform(get("/api/user?email="+appUser1.getEmail()))
                 .andDo(print())
                 .andExpect(status().isOk())

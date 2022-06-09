@@ -97,7 +97,7 @@ class AppUserServiceTest {
         given(appUserRepository.findByEmail(anyString())).willReturn(mockUser);
 
         //when
-        AppUser expected = underTest.getUser(mockEmail);
+        AppUser expected = underTest.getUserByEmail(mockEmail);
 
         assertThat(mockUser).isEqualTo(expected);
     }
@@ -112,7 +112,7 @@ class AppUserServiceTest {
         // then
 
         //when
-        assertThatThrownBy(()->underTest.getUser(mockEmail))
+        assertThatThrownBy(()->underTest.getUserByEmail(mockEmail))
                 .isInstanceOf(CustomNotFoundException.class)
                 .hasMessageContaining("user does not exist");
     }

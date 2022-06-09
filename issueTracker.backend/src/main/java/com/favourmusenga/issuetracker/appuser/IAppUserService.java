@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IAppUserService {
     void saveUser(AppUser appUser) throws CustomBadRequestException;
-    AppUser getUser(String email) throws CustomNotFoundException;
+    AppUser getUserByEmail(String email) throws CustomNotFoundException;
     List<AppUser> getAllUser();
 
 }

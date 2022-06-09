@@ -45,7 +45,7 @@ class EquipmentServiceTest {
 
         when(equipmentRepository.findById(equipment.getId())).thenReturn(Optional.of(equipment));
 
-        underTest.getEquipmentId(equipment.getId());
+        underTest.getEquipmentById(equipment.getId());
 
         verify(equipmentRepository).findById(equipment.getId());
     }
