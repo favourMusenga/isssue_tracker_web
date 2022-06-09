@@ -33,7 +33,7 @@ class LocationServiceTest {
     @DisplayName("save new location")
     void canSaveNewLocation() {
         // given
-        Location mockLocation = new Location(1L,"zz3/907 chachacha lunda road",3, "kitwe");;
+        Location mockLocation = new Location(1L,"zz3/907 chachacha lunda road",3, "kitwe");
 
         underTestService.saveNewLocation(mockLocation);
 

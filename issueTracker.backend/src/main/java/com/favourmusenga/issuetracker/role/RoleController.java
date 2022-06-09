@@ -19,7 +19,7 @@ public class RoleController {
     private final RoleService roleService;
 
     @GetMapping
-    ResponseEntity<CustomResponseBody<List<Role>>> getAllUser(){
+    ResponseEntity<CustomResponseBody<List<Role>>> getAllRole(){
         return ResponseEntity.ok().body(new CustomResponseBody<>(HttpStatus.OK.value(), roleService.getAllRole()));
     }
 
