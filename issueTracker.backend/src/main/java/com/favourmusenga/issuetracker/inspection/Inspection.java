@@ -23,7 +23,6 @@ public class Inspection {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
     private String Comment;
 
     @Column(nullable = false)

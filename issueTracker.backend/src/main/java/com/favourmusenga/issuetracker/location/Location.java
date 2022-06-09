@@ -20,17 +20,14 @@ public class Location {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @NotNull(message = "physical address is required")
     @NotBlank(message = "physical address is required")
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String physicalAddress;
 
     @NotNull(message = "zone is required")
-    @NotBlank(message = "zone is required")
     @Column(nullable = false)
     private Integer zone;
 
-    @NotNull(message = "town is required")
     @NotBlank(message = "town is required")
     @Column(nullable = false, length = 50)
     private String town;

@@ -1,16 +1,12 @@
 package com.favourmusenga.issuetracker.inspection;
 
-import com.favourmusenga.issuetracker.appuser.AppUser;
-import com.favourmusenga.issuetracker.equipment.Equipment;
-import com.favourmusenga.issuetracker.status.Status;
-
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 
 public class InspectionRequest {
 
-    private String Comment;
+    private String comment;
 
     @NotBlank
     private String date;
@@ -24,7 +20,7 @@ public class InspectionRequest {
     private Long equipmentId;
 
     public InspectionRequest(String comment, String date, String userEmail, Long statusId, Long equipmentId) {
-        Comment = comment;
+        this.comment = comment;
         this.date = date;
         this.userEmail = userEmail;
         this.statusId = statusId;
@@ -32,11 +28,11 @@ public class InspectionRequest {
     }
 
     public String getComment() {
-        return Comment;
+        return comment;
     }
 
     public void setComment(String comment) {
-        Comment = comment;
+        this.comment = comment;
     }
 
     public String getDate() {
@@ -74,7 +70,7 @@ public class InspectionRequest {
     @Override
     public String toString() {
         return "InspectRequest{" +
-                "Comment='" + Comment + '\'' +
+                "Comment='" + comment + '\'' +
                 ", date='" + date + '\'' +
                 ", appUser=" + userEmail +
                 ", statusId=" + statusId +

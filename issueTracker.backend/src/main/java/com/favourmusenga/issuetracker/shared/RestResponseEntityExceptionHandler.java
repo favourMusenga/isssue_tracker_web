@@ -18,6 +18,7 @@ import java.nio.file.AccessDeniedException;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -67,4 +68,10 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         return handleExceptionInternal(ex,responseBody,new HttpHeaders(),HttpStatus.UNAUTHORIZED, request);
     }
 
+    @ExceptionHandler(NoSuchElementException.class)
+    public ResponseEntity<Object> NoSuchElementException(final NoSuchElementException ex, final WebRequest request){
+
+        CustomErrorResponse responseBody = new CustomErrorResponse<>(HttpStatus.BAD_REQUEST.value(),"PLease ensure that the required id exists",HttpStatus.UNAUTHORIZED.toString());;
+        return handleExceptionInternal(ex,responseBody,new HttpHeaders(),HttpStatus.BAD_REQUEST,request);
+    }
 }
