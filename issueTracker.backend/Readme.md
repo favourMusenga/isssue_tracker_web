@@ -40,16 +40,16 @@ mvn -version
 ## TODO
 
 - [x] Initial Structure
-- [ ] Adding roles of users
-- [ ] Adding users
+- [x] Adding roles of users
+- [x] Adding users
 - [x] Getting all users
 - [x] User Authentication
-- [ ] Adding Location
-- [ ] Getting all location
-- [ ] Adding Equipment
-- [ ] Getting all equipment
-- [ ] Adding Status
-- [ ] Getting all status
-- [ ] Adding Issues
-- [ ] Getting all Issues
+- [x] Adding Location
+- [x] Getting all location
+- [x] Adding Equipment
+- [x] Getting all equipment
+- [x] Adding Status
+- [x] Getting all status
+- [x] Adding Issues
+- [x] Getting all Issues
 - [ ] (Optional) Generating report
