@@ -5,7 +5,7 @@ name: Java CI with Maven
 
 on:
   push:
-    paths:'issueTracker.backend/**'
+    paths: 'issueTracker.backend/**'
     branches: [ "main" ]
   pull_request:
     paths: 'issueTracker.backend/**'
