@@ -8,7 +8,7 @@
 		<version>2.7.0</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
-	<groupId>com.favourmusenga.</groupId>
+	<groupId>com.favourmusenga</groupId>
 	<artifactId>issuetracker</artifactId>
 	<version>1.0.0</version>
 	<name>issuetracker</name>
