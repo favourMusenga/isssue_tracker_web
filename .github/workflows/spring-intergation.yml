@@ -25,7 +25,7 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: Build with Maven
-      run: mvn clean install
+      run: mvn -f ./issueTracker.backend clean install
   test:
 
     runs-on: ubuntu-latest
@@ -39,4 +39,4 @@ jobs:
         distribution: 'temurin'
         cache: maven
     - name: test with Maven
-      run: mvn test
+      run: mvn -f ./issueTracker.backend test
