@@ -30,6 +30,7 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'yarn'
+          cache-dependency-path: './issueTracker.frontend/yarn.lock'
       - run: yarn
         working-directory: ${{env.working-directory}}
 
