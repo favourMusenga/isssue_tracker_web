@@ -55,7 +55,7 @@ yarn build
 ## TODO
 
 - [x] Initial Structure
-- [ ] Pages
+- [x] Pages
 - [ ] User Authentication
 - [ ] Update About Page
 - [ ] Adding Equipment
