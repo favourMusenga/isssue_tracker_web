@@ -28,6 +28,8 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
-          working-directory: 'issueTracker.frontend'
       - run: npm  install
-      - run: ./issueTracker.frontend/ npm run build --if-present
+        working-directory: issueTracker.frontend
+
+      - run: npm run build --if-present
+        working-directory: issueTracker.frontend

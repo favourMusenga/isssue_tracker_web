@@ -2,7 +2,7 @@
 
 ## Description
 
-This is the frontend of the app. It helps Zesco to keep track of issues with their equipments and the current statuses of the equipments
+This is the frontend of the app. It helps Zesco to keep track of issues with their equipments and the current statuses of the equipments.
 
 ## Technologies used
 
