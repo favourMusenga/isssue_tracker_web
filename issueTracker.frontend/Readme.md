@@ -58,6 +58,9 @@ yarn build
 - [x] Pages
 - [ ] User Authentication
 - [ ] Update About Page
-- [ ] Adding Equipment
-- [ ] Adding Issues
+- [ ] Adding location to database
+- [ ] Adding user to database
+- [ ] Adding Equipment to database
+- [ ] Adding Equipment to database
+- [ ] Adding Issues to database
 - [ ] (Optional) Generating report
