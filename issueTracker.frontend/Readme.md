@@ -1,9 +1,5 @@
 # Zesco Issue Tracker Web Frontend
 
-> ## Note to classmate
->
-> Please do not submit the same frontend app. Change the colors or same to make it very different from mine. I beg!!!
-
 ## Description
 
 This is the frontend of the app. It helps Zesco to keep track of issues with their equipments and the current statuses of the equipments

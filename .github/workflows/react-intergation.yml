@@ -2,7 +2,7 @@ name: javascript CI
 
 defaults:
   run:
-    working-directory: issueTracker.frontend
+    working-directory: 'issueTracker.frontend'
 
 on:
   push:
@@ -28,5 +28,6 @@ jobs:
         with:
           node-version: ${{ matrix.node-version }}
           cache: 'npm'
+          working-directory: 'issueTracker.frontend'
       - run: npm  install
       - run: ./issueTracker.frontend/ npm run build --if-present
