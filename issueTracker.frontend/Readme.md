@@ -2,13 +2,12 @@
 
 ## Description
 
-This is the frontend of the app. It helps Zesco to keep track of issues with their equipments and the current statuses of the equipments
+This is the frontend of the app. It helps Zesco to keep track of issues with their equipments and the current statuses of the equipments.
 
 ## Technologies used
 
 - [react js](https://reactjs.org/)
 - [vite](https://vitejs.dev/)
-- [redux-toolkit](https://redux-toolkit.js.org/)
 - [react router](https://reactrouter.com/)
 - [chakra-ui](https://chakra-ui.com/)
 - [typescript](https://www.typescriptlang.org/)
