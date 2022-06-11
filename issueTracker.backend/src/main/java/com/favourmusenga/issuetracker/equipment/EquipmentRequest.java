@@ -13,12 +13,12 @@ public class EquipmentRequest {
     private String description;
 
     @NotNull(message="id is required")
-    private Long id;
+    private Long locationId;
 
-    public EquipmentRequest(String name, String description, Long id) {
+    public EquipmentRequest(String name, String description, Long locationId) {
         this.name = name;
         this.description = description;
-        this.id = id;
+        this.locationId = locationId;
     }
 
     public String getName() {
@@ -37,12 +37,12 @@ public class EquipmentRequest {
         this.description = description;
     }
 
-    public Long getId() {
-        return id;
+    public Long getLocationId() {
+        return locationId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setLocationId(Long locationId) {
+        this.locationId = locationId;
     }
 
     @Override
@@ -50,7 +50,7 @@ public class EquipmentRequest {
         return "EquipmentRequest{" +
                 "name='" + name + '\'' +
                 ", description='" + description + '\'' +
-                ", id=" + id +
+                ", locationId=" + locationId +
                 '}';
     }
 }

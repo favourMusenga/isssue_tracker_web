@@ -23,7 +23,7 @@ public class EquipmentController {
     @PostMapping
     public ResponseEntity<?> addNewEquipment(@Valid @RequestBody EquipmentRequest equipmentRequest){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/role").toUriString());
-        Location location = locationService.getLocationById(equipmentRequest.getId());
+        Location location = locationService.getLocationById(equipmentRequest.getLocationId());
 
         Equipment equipment = new Equipment(equipmentRequest.getName(),equipmentRequest.getDescription(),location);
         equipmentService.saveEquipment(equipment);
