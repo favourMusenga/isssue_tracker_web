@@ -1,15 +1,12 @@
-import React, { useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Navigate, Outlet, useLocation } from 'react-router-dom';
+import { AppContext } from '../context/AppContextProvider';
 
 const AuthRequired: React.FC<{ children?: JSX.Element }> = ({ children }) => {
 	const location = useLocation();
-	const [isAuth, setIsAuth] = useState(true);
+	const { appState } = useContext(AppContext);
+	const { isAuth } = appState;
 
-	useEffect(() => {
-		setTimeout(() => {
-			setIsAuth((prev) => !prev);
-		}, 10000);
-	}, []);
 	if (!isAuth) {
 		return <Navigate to="/login" state={{ from: location }} replace />;
 	}
