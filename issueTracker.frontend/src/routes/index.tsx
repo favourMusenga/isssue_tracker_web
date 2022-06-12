@@ -1,3 +1,4 @@
+import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import MainLayout from '../components/Shared/MainLayout';
 import AboutPage from '../pages/protected/AboutPage';
@@ -10,7 +11,7 @@ import LogInPage from '../pages/public/LogInPage';
 import NotFound from '../pages/public/NotFound';
 import AuthRequired from './AuthRequired';
 
-export const AppRoutes = () => {
+export const AppRoutes: React.FC = () => {
 	return (
 		<Routes>
 			<Route path="/login" element={<LogInPage />} />
