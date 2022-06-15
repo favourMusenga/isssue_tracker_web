@@ -9,6 +9,7 @@ import {
 	Heading,
 	FormErrorMessage,
 	Text,
+	useColorModeValue,
 } from '@chakra-ui/react';
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -53,7 +54,11 @@ const LogInPage: React.FC = () => {
 
 	return (
 		<Center width="100vw" h="100vh">
-			<Box border="1px" borderColor="gray.600">
+			<Box
+				border="1px"
+				borderColor="gray.600"
+				bg={useColorModeValue('gray.50', 'gray.800')}
+			>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<VStack p="3" spacing="4">
 						<Heading textTransform="uppercase">issue tracker</Heading>
