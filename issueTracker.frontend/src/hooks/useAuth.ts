@@ -1,5 +1,6 @@
 import { AxiosError } from 'axios';
 import { useContext } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContextProvider';
 import useAxios from './useAxios';
 
@@ -7,7 +8,9 @@ type resData = { expiresIn: string; accessToken: string; email: string };
 
 const useAuth = () => {
 	const axios = useAxios();
-	const { changeEmail, changeIsAuth, changeAccessToken } =
+	const navigate = useNavigate();
+	const location = useLocation();
+	const { changeEmail, changeIsAuth, changeAccessToken, changeExpiresIn } =
 		useContext(AppContext);
 
 	async function login(username: string, password: string) {
@@ -23,6 +26,7 @@ const useAuth = () => {
 			changeEmail(resData.email);
 			changeIsAuth(true);
 			changeAccessToken(resData.accessToken);
+			changeExpiresIn(resData.expiresIn);
 		} catch (e) {
 			if (e instanceof AxiosError) {
 				if (e.response?.status === 401) {
@@ -34,7 +38,14 @@ const useAuth = () => {
 		}
 	}
 
-	function logout() {}
+	function logout() {
+		changeEmail('');
+		changeIsAuth(true);
+		changeAccessToken('');
+		changeExpiresIn('');
+
+		navigate('/login', { replace: true, state: { from: location } });
+	}
 
 	return { login, logout };
 };

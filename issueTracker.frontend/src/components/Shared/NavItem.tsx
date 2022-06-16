@@ -1,4 +1,10 @@
-import { Flex, FlexProps, Icon, Link } from '@chakra-ui/react';
+import {
+	Flex,
+	FlexProps,
+	Icon,
+	Link,
+	useColorModeValue,
+} from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { IconType } from 'react-icons';
 import { Link as RouterLink } from 'react-router-dom';
@@ -14,7 +20,6 @@ const NavItem = ({ icon, url, children, ...rest }: NavItemProps) => {
 			to={url}
 			as={RouterLink}
 			style={{ textDecoration: 'none' }}
-			_hidden={{ backgroundColor: 'whatsapp' }}
 			_focus={{ boxShadow: 'none' }}
 		>
 			<Flex
@@ -25,7 +30,7 @@ const NavItem = ({ icon, url, children, ...rest }: NavItemProps) => {
 				role="group"
 				cursor="pointer"
 				_hover={{
-					bg: 'cyan.400',
+					bg: useColorModeValue('whatsapp.600', 'whatsapp.500'),
 					color: 'white',
 				}}
 				{...rest}

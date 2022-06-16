@@ -69,10 +69,9 @@ export interface IInspection {
 	equipment: IEquipment;
 }
 
-export type themeType = 'light' | 'dark';
 export type appState = {
 	accessToken: string;
 	email: string;
 	isAuth: boolean;
-	theme: themeType;
+	expiresIn: string;
 };

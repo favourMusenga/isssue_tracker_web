@@ -5,11 +5,11 @@ import React, {
 	useEffect,
 	useReducer,
 } from 'react';
-import { appState, themeType } from '../type';
+import { appState } from '../type';
 
 type appContextType = {
 	appState: appState;
-	changeTheme: (theme: themeType) => void;
+	changeExpiresIn: (date: string) => void;
 	changeEmail: (email: string) => void;
 	changeIsAuth: (isAuth: boolean) => void;
 	changeAccessToken: (accessToken: string) => void;
@@ -17,19 +17,19 @@ type appContextType = {
 
 type actionType = {
 	type: string;
-	payload: string | boolean | themeType;
+	payload: string | boolean;
 };
 
 const EMAIL = 'email';
 const TOKEN = 'accessToken';
-const THEME = 'theme';
+const EXPIRES_IN = 'expireIn';
 const AUTH = 'auth';
 
 const defaultState: appState = {
 	email: '',
 	accessToken: '',
 	isAuth: false,
-	theme: 'dark',
+	expiresIn: 'dark',
 };
 
 export const AppContext = createContext<appContextType>({
@@ -37,7 +37,7 @@ export const AppContext = createContext<appContextType>({
 	changeAccessToken: () => {},
 	changeEmail: () => {},
 	changeIsAuth: () => {},
-	changeTheme: () => {},
+	changeExpiresIn: () => {},
 });
 
 const Provider = AppContext.Provider;
@@ -65,8 +65,8 @@ function reducer(state: appState, action: actionType): appState {
 			return { ...state, isAuth: action.payload as boolean };
 		case TOKEN:
 			return { ...state, accessToken: action.payload as string };
-		case THEME:
-			return { ...state, theme: action.payload as themeType };
+		case EXPIRES_IN:
+			return { ...state, expiresIn: action.payload as string };
 		default:
 			return state;
 	}
@@ -86,8 +86,8 @@ const AppContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
 	const changeIsAuth = (isAuth: boolean): void => {
 		dispatch({ type: AUTH, payload: isAuth });
 	};
-	const changeTheme = (theme: themeType): void => {
-		dispatch({ type: THEME, payload: theme });
+	const changeExpiresIn = (date: string): void => {
+		dispatch({ type: EXPIRES_IN, payload: date });
 	};
 
 	useEffect(() => {
@@ -101,7 +101,7 @@ const AppContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
 				changeAccessToken,
 				changeEmail,
 				changeIsAuth,
-				changeTheme,
+				changeExpiresIn,
 			}}
 		>
 			{children}

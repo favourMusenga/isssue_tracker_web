@@ -57,7 +57,7 @@ const LogInPage: React.FC = () => {
 			<Box
 				border="1px"
 				borderColor="gray.600"
-				bg={useColorModeValue('gray.50', 'gray.800')}
+				backgroundColor={useColorModeValue('gray.50', 'gray.900')}
 			>
 				<form onSubmit={handleSubmit(onSubmit)}>
 					<VStack p="3" spacing="4">

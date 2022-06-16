@@ -1,5 +1,5 @@
 import { useContext } from 'react';
-import axios from 'axios';
+import axios, { AxiosError } from 'axios';
 import { AppContext } from '../context/AppContextProvider';
 
 const useAxios = () => {
@@ -11,7 +11,16 @@ const useAxios = () => {
 			Authorization: `Bearer ${accessToken}`,
 		},
 	});
-
+	axiosInstance.interceptors.response.use(
+		(response) => {
+			return response;
+		},
+		(err) => {
+			if (err instanceof AxiosError) {
+				throw new Error('not authorized');
+			}
+		}
+	);
 	return axiosInstance;
 };
 

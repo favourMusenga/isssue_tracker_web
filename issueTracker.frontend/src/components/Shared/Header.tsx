@@ -14,9 +14,14 @@ import {
 	FlexProps,
 	useColorMode,
 	Button,
+	Circle,
 } from '@chakra-ui/react';
-import React from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { FiMenu, FiChevronDown, FiSun, FiMoon } from 'react-icons/fi';
+import { AppContext } from '../../context/AppContextProvider';
+import useAuth from '../../hooks/useAuth';
+import useAxios from '../../hooks/useAxios';
+import { IUser } from '../../type';
 
 interface HeaderProps extends FlexProps {
 	onOpen: () => void;
@@ -24,6 +29,26 @@ interface HeaderProps extends FlexProps {
 
 export const Header: React.FC<HeaderProps> = ({ onOpen, ...rest }) => {
 	const { colorMode, toggleColorMode } = useColorMode();
+	const [user, setUser] = useState<IUser>();
+	const { appState } = useContext(AppContext);
+	const { logout } = useAuth();
+	const axios = useAxios();
+
+	useEffect(() => {
+		axios
+			.get('/api/user', { params: { email: appState.email } })
+			.then((res) => {
+				if (res.status >= 200 && res.status <= 299) {
+					const user: IUser = res.data.data;
+					setUser(() => user);
+				}
+			})
+			.catch((err) => {
+				if (err.message === 'not authorized') {
+					logout();
+				}
+			});
+	}, []);
 	return (
 		<Flex
 			ml={{ base: 0, md: 60 }}
@@ -45,7 +70,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpen, ...rest }) => {
 			/>
 
 			<Text
-				fontSize="2xl"
+				fontSize={{ sm: '2xl', base: '16' }}
 				fontFamily="monospace"
 				fontWeight="bold"
 				textTransform="capitalize"
@@ -54,7 +79,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpen, ...rest }) => {
 			</Text>
 
 			<HStack spacing={{ base: '0', md: '6' }}>
-				<Button onClick={toggleColorMode}>
+				<Button onClick={toggleColorMode} marginRight={{ md: '0', base: '3' }}>
 					{colorMode === 'light' ? <FiMoon /> : <FiSun />}
 				</Button>
 				<Flex alignItems={'center'}>
@@ -65,21 +90,22 @@ export const Header: React.FC<HeaderProps> = ({ onOpen, ...rest }) => {
 							_focus={{ boxShadow: 'none' }}
 						>
 							<HStack>
-								<Avatar
-									size={'sm'}
-									src={
-										'https://images.unsplash.com/photo-1619946794135-5bc917a27793?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9'
-									}
-								/>
+								<Circle bg={'whatsapp.500'} padding="2">
+									<Text>{`${user?.userName.firstName.charAt(
+										0
+									)} ${user?.userName.lastName.charAt(0)}`}</Text>
+								</Circle>
 								<VStack
 									display={{ base: 'none', md: 'flex' }}
 									alignItems="flex-start"
 									spacing="1px"
 									ml="2"
 								>
-									<Text fontSize="sm">Justina Clark</Text>
+									<Text fontSize="sm">
+										{`${user?.userName.firstName} ${user?.userName.lastName}`}
+									</Text>
 									<Text fontSize="xs" color="gray.600">
-										Admin
+										{user?.role.name}
 									</Text>
 								</VStack>
 								<Box display={{ base: 'none', md: 'flex' }}>
@@ -91,7 +117,15 @@ export const Header: React.FC<HeaderProps> = ({ onOpen, ...rest }) => {
 							bg={useColorModeValue('white', 'gray.900')}
 							borderColor={useColorModeValue('gray.200', 'gray.700')}
 						>
-							<MenuItem>Sign out</MenuItem>
+							<MenuItem
+								_hover={{
+									bg: useColorModeValue('whatsapp.600', 'whatsapp.500'),
+									color: 'white',
+								}}
+								onClick={logout}
+							>
+								Sign out
+							</MenuItem>
 						</MenuList>
 					</Menu>
 				</Flex>

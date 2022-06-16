@@ -58,7 +58,7 @@ public class CustomAuthenticationFilter  extends UsernamePasswordAuthenticationF
 
         jsonData.put("accessToken", accessToken);
         jsonData.put("email", user.getUsername());
-        jsonData.put("expiresIn", String.valueOf(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24).getTime()));
+        jsonData.put("expiresIn", String.valueOf(new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 24)));
 
         response.setContentType(APPLICATION_JSON_VALUE);
 
