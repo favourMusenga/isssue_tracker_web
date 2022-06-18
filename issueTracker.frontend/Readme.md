@@ -51,11 +51,10 @@ yarn build
 
 - [x] Initial Structure
 - [x] Pages
-- [ ] User Authentication
-- [ ] Update About Page
-- [ ] Adding location to database
+- [x] User Authentication
+- [x] Update About Page
+- [x] Adding location to database
 - [ ] Adding user to database
-- [ ] Adding Equipment to database
 - [ ] Adding Equipment to database
 - [ ] Adding Issues to database
 - [ ] (Optional) Generating report
