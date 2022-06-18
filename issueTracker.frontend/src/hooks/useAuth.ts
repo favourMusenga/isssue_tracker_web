@@ -10,8 +10,13 @@ const useAuth = () => {
 	const axios = useAxios();
 	const navigate = useNavigate();
 	const location = useLocation();
-	const { changeEmail, changeIsAuth, changeAccessToken, changeExpiresIn } =
-		useContext(AppContext);
+	const {
+		changeEmail,
+		changeIsAuth,
+		changeAccessToken,
+		changeExpiresIn,
+		changeRole,
+	} = useContext(AppContext);
 
 	async function login(username: string, password: string) {
 		const formData = new FormData();
@@ -43,6 +48,7 @@ const useAuth = () => {
 		changeIsAuth(false);
 		changeAccessToken('');
 		changeExpiresIn('');
+		changeRole('');
 
 		navigate('/login', { replace: true, state: { from: location } });
 	}

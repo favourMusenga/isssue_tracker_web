@@ -65,7 +65,7 @@ const LocationTable: React.FC = () => {
 						</Tr>
 					)}
 					{data &&
-						data.length &&
+						data.length > 0 &&
 						data.map((location) => (
 							<Tr key={`${location.town}${location.id}`}>
 								<Td isNumeric>{counter++}</Td>
