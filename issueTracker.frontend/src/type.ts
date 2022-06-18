@@ -49,7 +49,7 @@ export interface IStatus {
 export interface ILocation {
 	id?: number;
 	physicalAddress: string;
-	zone: number;
+	zone: string;
 	town: string;
 }
 
@@ -74,4 +74,5 @@ export type appState = {
 	email: string;
 	isAuth: boolean;
 	expiresIn: string;
+	role: string;
 };

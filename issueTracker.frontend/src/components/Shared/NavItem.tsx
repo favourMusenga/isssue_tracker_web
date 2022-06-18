@@ -7,7 +7,7 @@ import {
 } from '@chakra-ui/react';
 import { ReactNode } from 'react';
 import { IconType } from 'react-icons';
-import { Link as RouterLink } from 'react-router-dom';
+import { NavLink as RouterLink } from 'react-router-dom';
 
 interface NavItemProps extends FlexProps {
 	icon: IconType;
@@ -21,6 +21,10 @@ const NavItem = ({ icon, url, children, ...rest }: NavItemProps) => {
 			as={RouterLink}
 			style={{ textDecoration: 'none' }}
 			_focus={{ boxShadow: 'none' }}
+			_active={{
+				bg: useColorModeValue('whatsapp.500', 'whatsapp.500'),
+				fontWeight: 'bold',
+			}}
 		>
 			<Flex
 				align="center"

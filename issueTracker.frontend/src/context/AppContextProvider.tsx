@@ -13,6 +13,7 @@ type appContextType = {
 	changeEmail: (email: string) => void;
 	changeIsAuth: (isAuth: boolean) => void;
 	changeAccessToken: (accessToken: string) => void;
+	changeRole: (accessToken: string) => void;
 };
 
 type actionType = {
@@ -24,12 +25,14 @@ const EMAIL = 'email';
 const TOKEN = 'accessToken';
 const EXPIRES_IN = 'expireIn';
 const AUTH = 'auth';
+const ROLE = 'role';
 
 const defaultState: appState = {
 	email: '',
 	accessToken: '',
 	isAuth: false,
 	expiresIn: 'dark',
+	role: '',
 };
 
 export const AppContext = createContext<appContextType>({
@@ -38,6 +41,7 @@ export const AppContext = createContext<appContextType>({
 	changeEmail: () => {},
 	changeIsAuth: () => {},
 	changeExpiresIn: () => {},
+	changeRole: () => {},
 });
 
 const Provider = AppContext.Provider;
@@ -67,6 +71,8 @@ function reducer(state: appState, action: actionType): appState {
 			return { ...state, accessToken: action.payload as string };
 		case EXPIRES_IN:
 			return { ...state, expiresIn: action.payload as string };
+		case ROLE:
+			return { ...state, role: action.payload as string };
 		default:
 			return state;
 	}
@@ -90,6 +96,10 @@ const AppContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
 		dispatch({ type: EXPIRES_IN, payload: date });
 	};
 
+	const changeRole = (role: string) => {
+		dispatch({ type: ROLE, payload: role });
+	};
+
 	useEffect(() => {
 		setAppStateLocalStorage(appState);
 	}, [appState]);
@@ -102,6 +112,7 @@ const AppContextProvider: FC<{ children: ReactNode }> = ({ children }) => {
 				changeEmail,
 				changeIsAuth,
 				changeExpiresIn,
+				changeRole,
 			}}
 		>
 			{children}

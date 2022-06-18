@@ -40,7 +40,7 @@ const useAuth = () => {
 
 	function logout() {
 		changeEmail('');
-		changeIsAuth(true);
+		changeIsAuth(false);
 		changeAccessToken('');
 		changeExpiresIn('');
 

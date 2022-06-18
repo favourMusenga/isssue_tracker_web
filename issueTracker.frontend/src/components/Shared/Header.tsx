@@ -30,7 +30,7 @@ interface HeaderProps extends FlexProps {
 export const Header: React.FC<HeaderProps> = ({ onOpen, ...rest }) => {
 	const { colorMode, toggleColorMode } = useColorMode();
 	const [user, setUser] = useState<IUser>();
-	const { appState } = useContext(AppContext);
+	const { appState, changeRole } = useContext(AppContext);
 	const { logout } = useAuth();
 	const axios = useAxios();
 
@@ -41,6 +41,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpen, ...rest }) => {
 				if (res.status >= 200 && res.status <= 299) {
 					const user: IUser = res.data.data;
 					setUser(() => user);
+					changeRole(user.role.name);
 				}
 			})
 			.catch((err) => {
@@ -90,7 +91,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpen, ...rest }) => {
 							_focus={{ boxShadow: 'none' }}
 						>
 							<HStack>
-								<Circle bg={'whatsapp.500'} padding="2">
+								<Circle
+									bg={'whatsapp.500'}
+									padding="2"
+									textTransform={'uppercase'}
+								>
 									<Text>{`${user?.userName.firstName.charAt(
 										0
 									)} ${user?.userName.lastName.charAt(0)}`}</Text>
