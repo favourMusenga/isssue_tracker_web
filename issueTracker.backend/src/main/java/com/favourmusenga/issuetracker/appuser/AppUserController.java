@@ -30,7 +30,7 @@ public class AppUserController {
     @PostMapping
     ResponseEntity<?> addNewUser(@Valid @RequestBody AppUserRequest appUserRequest) throws CustomNotFoundException, CustomBadRequestException {
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/user").toUriString());
-        Role role = roleService.getRole(appUserRequest.getStatus());
+        Role role = roleService.getRole(appUserRequest.getRole());
 
         userService.saveUser(new AppUser(appUserRequest.getEmail(), appUserRequest.getPassword(), new UserName(appUserRequest.getFirstName(), appUserRequest.getMiddleName(), appUserRequest.getLastName()),role));
 
