@@ -33,11 +33,11 @@ public class AppUser {
     @JoinColumn(name = "role_id", referencedColumnName = "id",nullable = false)
     private Role role;
 
-    public AppUser(String email, String password, UserName userName, Role statusID) {
+    public AppUser(String email, String password, UserName userName, Role role) {
         this.email = email;
         this.password = password;
         this.userName = userName;
-        this.role = statusID;
+        this.role = role;
     }
 }
 

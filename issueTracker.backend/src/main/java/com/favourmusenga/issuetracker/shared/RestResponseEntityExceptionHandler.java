@@ -15,10 +15,7 @@ import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.nio.file.AccessDeniedException;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.NoSuchElementException;
+import java.util.*;
 
 @ControllerAdvice
 public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionHandler {
@@ -35,35 +32,35 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
             errors.put(fieldName, errorMessage);
         });
 
-        CustomErrorResponse responseBody = new CustomErrorResponse<>(HttpStatus.BAD_REQUEST.value(),Arrays.asList(errors),HttpStatus.BAD_REQUEST.toString());
+        CustomErrorResponse<List<Map<String, String>>> responseBody = new CustomErrorResponse<>(HttpStatus.BAD_REQUEST.value(), List.of(errors),HttpStatus.BAD_REQUEST.toString());
 
         return handleExceptionInternal(ex,responseBody,headers,HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(CustomNotFoundException.class)
     public ResponseEntity<Object> handleCustomNotFoundException(final CustomNotFoundException ex, final WebRequest request){
-        CustomErrorResponse responseBody = new CustomErrorResponse<>(HttpStatus.NOT_FOUND.value(),ex.getMessage(),HttpStatus.NOT_FOUND.toString());
+        CustomErrorResponse<String> responseBody = new CustomErrorResponse<>(HttpStatus.NOT_FOUND.value(),ex.getMessage(),HttpStatus.NOT_FOUND.toString());
 
         return handleExceptionInternal(ex,responseBody,new HttpHeaders(),HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler(CustomBadRequestException.class)
     public ResponseEntity<Object> handleCustomBadRequestException(final CustomBadRequestException ex, final WebRequest request){
-        CustomErrorResponse responseBody = new CustomErrorResponse<>(HttpStatus.NOT_FOUND.value(),ex.getMessage(),HttpStatus.NOT_FOUND.toString());
+        CustomErrorResponse<String> responseBody = new CustomErrorResponse<>(HttpStatus.BAD_REQUEST.value(),ex.getMessage(),HttpStatus.BAD_REQUEST.toString());
 
-        return handleExceptionInternal(ex,responseBody,new HttpHeaders(),HttpStatus.NOT_FOUND, request);
+        return handleExceptionInternal(ex,responseBody,new HttpHeaders(),HttpStatus.BAD_REQUEST, request);
     }
 
     @ExceptionHandler(AccessDeniedException.class)
     public ResponseEntity<Object> handleAccessDeniedException(final AccessDeniedException ex, final WebRequest request){
-        CustomErrorResponse responseBody = new CustomErrorResponse<>(HttpStatus.UNAUTHORIZED.value(),ex.getMessage(),HttpStatus.UNAUTHORIZED.toString());
+        CustomErrorResponse<String> responseBody = new CustomErrorResponse<>(HttpStatus.UNAUTHORIZED.value(),ex.getMessage(),HttpStatus.UNAUTHORIZED.toString());
 
         return handleExceptionInternal(ex,responseBody,new HttpHeaders(),HttpStatus.UNAUTHORIZED, request);
     }
 
     @ExceptionHandler(AuthenticationException.class)
     public ResponseEntity<Object> handleAAuthenticationException(final AuthenticationException ex, final WebRequest request){
-        CustomErrorResponse responseBody = new CustomErrorResponse<>(HttpStatus.UNAUTHORIZED.value(),"Invalid username or password",HttpStatus.UNAUTHORIZED.toString());
+        CustomErrorResponse<String> responseBody = new CustomErrorResponse<>(HttpStatus.UNAUTHORIZED.value(),"Invalid username or password",HttpStatus.UNAUTHORIZED.toString());
 
         return handleExceptionInternal(ex,responseBody,new HttpHeaders(),HttpStatus.UNAUTHORIZED, request);
     }
@@ -71,7 +68,7 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
     @ExceptionHandler(NoSuchElementException.class)
     public ResponseEntity<Object> NoSuchElementException(final NoSuchElementException ex, final WebRequest request){
 
-        CustomErrorResponse responseBody = new CustomErrorResponse<>(HttpStatus.BAD_REQUEST.value(),"PLease ensure that the required id exists",HttpStatus.UNAUTHORIZED.toString());;
+        CustomErrorResponse<String> responseBody = new CustomErrorResponse<>(HttpStatus.BAD_REQUEST.value(),"PLease ensure that the required id exists",HttpStatus.UNAUTHORIZED.toString());
         return handleExceptionInternal(ex,responseBody,new HttpHeaders(),HttpStatus.BAD_REQUEST,request);
     }
 }
