@@ -5,7 +5,6 @@ import {
 	HStack,
 	Menu,
 	MenuButton,
-	Avatar,
 	VStack,
 	Box,
 	MenuList,
@@ -91,14 +90,14 @@ export const Header: React.FC<HeaderProps> = ({ onOpen, ...rest }) => {
 							_focus={{ boxShadow: 'none' }}
 						>
 							<HStack>
-								<Circle
-									bg={'whatsapp.500'}
-									padding="2"
-									textTransform={'uppercase'}
-								>
-									<Text>{`${user?.userName.firstName.charAt(
-										0
-									)} ${user?.userName.lastName.charAt(0)}`}</Text>
+								<Circle bg={'whatsapp.500'} size="40px">
+									{user && (
+										<Text
+											textTransform={'uppercase'}
+										>{`${user?.userName.firstName.charAt(
+											0
+										)} ${user?.userName.lastName.charAt(0)}`}</Text>
+									)}
 								</Circle>
 								<VStack
 									display={{ base: 'none', md: 'flex' }}
@@ -106,9 +105,11 @@ export const Header: React.FC<HeaderProps> = ({ onOpen, ...rest }) => {
 									spacing="1px"
 									ml="2"
 								>
-									<Text fontSize="sm">
-										{`${user?.userName.firstName} ${user?.userName.lastName}`}
-									</Text>
+									{user && (
+										<Text fontSize="sm">
+											{`${user?.userName.firstName} ${user?.userName.lastName}`}
+										</Text>
+									)}
 									<Text fontSize="xs" color="gray.600">
 										{user?.role.name}
 									</Text>

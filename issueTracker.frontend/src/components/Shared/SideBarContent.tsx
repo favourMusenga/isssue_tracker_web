@@ -6,8 +6,10 @@ import {
 	Text,
 	useColorModeValue,
 } from '@chakra-ui/react';
+import { useContext } from 'react';
 import { IconType } from 'react-icons';
 import { FiTool, FiHome, FiInfo, FiList, FiUser, FiMap } from 'react-icons/fi';
+import useAppContext from '../../hooks/useAppContext';
 import NavItem from './NavItem';
 
 interface LinkItemProps {
@@ -29,6 +31,7 @@ interface SidebarProps extends BoxProps {
 }
 
 const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
+	const { appState } = useAppContext();
 	return (
 		<Box
 			transition="3s ease"
@@ -46,16 +49,24 @@ const SidebarContent = ({ onClose, ...rest }: SidebarProps) => {
 				</Text>
 				<CloseButton display={{ base: 'flex', md: 'none' }} onClick={onClose} />
 			</Flex>
-			{LinkItems.map((link) => (
-				<NavItem
-					key={link.name}
-					icon={link.icon}
-					url={link.url}
-					onClick={onClose}
-				>
-					{link.name}
-				</NavItem>
-			))}
+			{LinkItems.map((link) => {
+				if (
+					appState.role.toLowerCase() !== 'supervisor' &&
+					link.name === 'User'
+				)
+					return;
+				else
+					return (
+						<NavItem
+							key={link.name}
+							icon={link.icon}
+							url={link.url}
+							onClick={onClose}
+						>
+							{link.name}
+						</NavItem>
+					);
+			})}
 		</Box>
 	);
 };

@@ -17,7 +17,8 @@ const useAxios = () => {
 		},
 		(err) => {
 			if (err instanceof AxiosError) {
-				throw new Error('not authorized');
+				if (err.response?.status === 403) throw new Error('not authorized');
+				else throw err;
 			}
 		}
 	);

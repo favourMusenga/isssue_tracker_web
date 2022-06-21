@@ -13,16 +13,22 @@ import {
 	useBreakpointValue,
 	useToast,
 } from '@chakra-ui/react';
+import { AxiosError } from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useAxios from '../../hooks/useAxios';
 import { IRole, IUserRequest } from '../../type';
 
-const UserForm: React.FC = () => {
+interface userFormProp {
+	isNotAllowed: boolean;
+}
+
+const UserForm: React.FC<userFormProp> = ({ isNotAllowed }) => {
 	const [roles, setRoles] = useState<IRole[]>([]);
 	const colSpan = useBreakpointValue({ base: 2, sm: 1 });
 	const axios = useAxios();
 	const toast = useToast();
+
 	const {
 		register,
 		handleSubmit,
@@ -45,12 +51,34 @@ const UserForm: React.FC = () => {
 						status: 'success',
 						position: 'bottom-right',
 					});
+					reset();
 					resolve();
 				})
 				.catch((err) => {
-					console.log(err);
+					if (err instanceof AxiosError) {
+						const errorData = err.response?.data.error;
+						if (typeof errorData === 'string') {
+							toast({
+								title: 'Error',
+								description: errorData,
+								isClosable: true,
+								duration: 9000,
+								status: 'error',
+								position: 'bottom-right',
+							});
+						}
+					} else {
+						toast({
+							title: 'Error',
+							description: 'something went wrong!!',
+							isClosable: true,
+							duration: 9000,
+							status: 'error',
+							position: 'bottom-right',
+						});
+					}
+					resolve();
 				});
-			resolve();
 		});
 	};
 
@@ -63,7 +91,7 @@ const UserForm: React.FC = () => {
 				<Heading>Add User</Heading>
 				<SimpleGrid column="2" columnGap={4} rowGap={5} marginTop={3}>
 					<GridItem colSpan={colSpan}>
-						<FormControl isRequired>
+						<FormControl isDisabled={isNotAllowed} isRequired>
 							<FormLabel htmlFor="firstName">first name</FormLabel>
 							<Input
 								type="text"
@@ -79,7 +107,7 @@ const UserForm: React.FC = () => {
 						</FormControl>
 					</GridItem>
 					<GridItem colSpan={colSpan}>
-						<FormControl>
+						<FormControl isDisabled={isNotAllowed}>
 							<FormLabel htmlFor="middleName">middle name</FormLabel>
 							<Input
 								type="text"
@@ -90,7 +118,7 @@ const UserForm: React.FC = () => {
 						</FormControl>
 					</GridItem>
 					<GridItem colSpan={colSpan}>
-						<FormControl isRequired>
+						<FormControl isDisabled={isNotAllowed} isRequired>
 							<FormLabel htmlFor="lastName">last name</FormLabel>
 							<Input
 								type="text"
@@ -104,7 +132,7 @@ const UserForm: React.FC = () => {
 						</FormControl>
 					</GridItem>
 					<GridItem colSpan={colSpan}>
-						<FormControl isRequired>
+						<FormControl isDisabled={isNotAllowed} isRequired>
 							<FormLabel htmlFor="role">role</FormLabel>
 							<Select
 								id="role"
@@ -120,7 +148,7 @@ const UserForm: React.FC = () => {
 						</FormControl>
 					</GridItem>
 					<GridItem colSpan={2}>
-						<FormControl isRequired>
+						<FormControl isDisabled={isNotAllowed} isRequired>
 							<FormLabel htmlFor="email">email</FormLabel>
 							<Input
 								type="email"
@@ -139,12 +167,18 @@ const UserForm: React.FC = () => {
 							w={'full'}
 							colorScheme={'whatsapp'}
 							isLoading={isSubmitting}
+							isDisabled={isNotAllowed}
 						>
 							Add user
 						</Button>
 					</GridItem>
 					<GridItem colSpan={colSpan}>
-						<Button type="reset" w={'full'} colorScheme={'red'}>
+						<Button
+							type="reset"
+							w={'full'}
+							colorScheme={'red'}
+							isDisabled={isNotAllowed}
+						>
 							Clear
 						</Button>
 					</GridItem>
