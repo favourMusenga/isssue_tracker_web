@@ -16,7 +16,7 @@ export interface IEquipmentRequest {
 export interface IInspectionRequest {
 	comment: string;
 	date: string;
-	userEmail: number;
+	userEmail: string;
 	statusId: number;
 	equipmentId: number;
 }

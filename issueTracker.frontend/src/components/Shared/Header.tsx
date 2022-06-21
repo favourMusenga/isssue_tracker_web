@@ -44,7 +44,7 @@ export const Header: React.FC<HeaderProps> = ({ onOpen, ...rest }) => {
 				}
 			})
 			.catch((err) => {
-				if (err.message === 'not authorized') {
+				if (err.message === 'not authorized' || err.response?.status === 404) {
 					logout();
 				}
 			});
