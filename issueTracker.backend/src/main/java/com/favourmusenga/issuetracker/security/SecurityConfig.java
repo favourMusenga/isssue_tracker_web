@@ -40,7 +40,7 @@ public class SecurityConfig {
                 .antMatchers(HttpMethod.POST,"/api/role").permitAll()
                 .antMatchers(HttpMethod.GET,"/api/role").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
-                .antMatchers(HttpMethod.POST, "/api/init").permitAll()
+                .antMatchers(HttpMethod.GET, "/api/init").permitAll()
                 .anyRequest().authenticated();
         http.apply(MyCustomDsl.myCustomDsl());
 
