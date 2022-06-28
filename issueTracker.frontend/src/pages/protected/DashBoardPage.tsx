@@ -3,9 +3,7 @@ import {
 	AlertDescription,
 	AlertIcon,
 	AlertTitle,
-	Center,
 	Stack,
-	Text,
 } from '@chakra-ui/react';
 import React from 'react';
 
