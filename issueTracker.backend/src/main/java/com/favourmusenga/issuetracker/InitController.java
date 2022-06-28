@@ -12,14 +12,14 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-@RestController()
-@RequestMapping("/api/init")
 @RequiredArgsConstructor
+@RestController
+@RequestMapping("/api/init")
 public class InitController {
-    private RoleService roleService;
-    private StatusService statusService;
-    private AppUserService appUserService;
+    final private RoleService roleService;
+
+    final private StatusService statusService;
+    final private AppUserService appUserService;
 
 
     @GetMapping
