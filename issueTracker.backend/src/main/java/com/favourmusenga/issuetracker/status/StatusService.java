@@ -6,9 +6,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-
-@Service
 @RequiredArgsConstructor
+@Service
 public class StatusService implements IStatusService {
     private final StatusRepository statusRepository;
 

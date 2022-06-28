@@ -12,6 +12,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table
 @NoArgsConstructor
+@AllArgsConstructor
 @Data
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class Status {
