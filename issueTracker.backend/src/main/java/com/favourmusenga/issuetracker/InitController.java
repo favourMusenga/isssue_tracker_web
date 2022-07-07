@@ -27,7 +27,7 @@ public class InitController {
 
 
     @GetMapping
-    public void initApp() throws CustomBadRequestException {
+    public String initApp() throws CustomBadRequestException {
         statusService.saveNewStatus(new Status("working", "machine is working"));
         statusService.saveNewStatus(new Status("not working", "machine is not working"));
         statusService.saveNewStatus(new Status("under servicing", "machine is being worked"));
@@ -46,5 +46,6 @@ public class InitController {
         locationService.saveNewLocation(new Location("Buntungwa, miseshi mindolo",3,"kitwe"));
         locationService.saveNewLocation(new Location("Hillcrest secondary school, mushili way",3,"livingstone"));
 
+        return "added initialized";
     }
 }

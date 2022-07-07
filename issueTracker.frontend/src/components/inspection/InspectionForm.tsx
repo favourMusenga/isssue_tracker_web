@@ -63,7 +63,7 @@ const InspectionForm: React.FC<InspectionFormProps> = ({
 		return new Promise<void>((resolve) => {
 			if (selectedInspection) {
 				axios
-					.patch(`/api/inspection/${selectedInspection.id}`, {
+					.put(`/api/inspection/${selectedInspection.id}`, {
 						...values,
 					})
 					.then(() => {
