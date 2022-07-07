@@ -1,5 +1,6 @@
 package com.favourmusenga.issuetracker.inspection;
 
+import com.favourmusenga.issuetracker.appuser.AppUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -7,7 +8,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Service
-public class InspectionService implements IInspection {
+public class InspectionService implements IInspectionService {
     private final InspectionRepository inspectionRepository;
 
     @Override
@@ -23,5 +24,17 @@ public class InspectionService implements IInspection {
     @Override
     public List<Inspection> getAllInspections() {
         return inspectionRepository.findAll();
+    }
+
+    @Override
+    public List<Inspection> getAllInspectionsByUser(AppUser appUser) {
+        return inspectionRepository
+                .findInspectionsByAppUser(appUser);
+    }
+
+    @Override
+    public void updateInspection(Inspection inspection) {
+
+        inspectionRepository.save(inspection);
     }
 }

@@ -3,6 +3,8 @@ package com.favourmusenga.issuetracker;
 import com.favourmusenga.issuetracker.appuser.AppUser;
 import com.favourmusenga.issuetracker.appuser.AppUserService;
 import com.favourmusenga.issuetracker.appuser.UserName;
+import com.favourmusenga.issuetracker.location.Location;
+import com.favourmusenga.issuetracker.location.LocationService;
 import com.favourmusenga.issuetracker.role.Role;
 import com.favourmusenga.issuetracker.role.RoleService;
 import com.favourmusenga.issuetracker.shared.exceptions.CustomBadRequestException;
@@ -21,6 +23,8 @@ public class InitController {
     final private StatusService statusService;
     final private AppUserService appUserService;
 
+    final private LocationService locationService;
+
 
     @GetMapping
     public void initApp() throws CustomBadRequestException {
@@ -34,7 +38,14 @@ public class InitController {
         roleService.saveNewRole(supervisor);
         roleService.saveNewRole(inspector);
 
-        appUserService.saveUser(new AppUser("supervisor@test", "test1234", new UserName("supervisor", null, "supervisor"), supervisor));
-        appUserService.saveUser(new AppUser("inspector@test", "test1234", new UserName("inspector", null, "inspector"), inspector));
+        appUserService.saveUser(new AppUser("supervisor@test.com", "test1234", new UserName("supervisor", null, "supervisor"), supervisor));
+        appUserService.saveUser(new AppUser("inspector@test.com", "test1234", new UserName("inspector", null, "inspector"), inspector));
+
+        locationService.saveNewLocation(new Location("main campus cbu, riverside",5,"kitwe"));
+        locationService.saveNewLocation(new Location("main campus unza, great east road",6 ,"location"));
+        locationService.saveNewLocation(new Location("Buntungwa, miseshi mindolo",3,"kitwe"));
+        locationService.saveNewLocation(new Location("Buntungwa, miseshi mindolo",3,"kitwe"));
+        locationService.saveNewLocation(new Location("Hillcrest secondary school, mushili way",3,"livingstone"));
+
     }
 }

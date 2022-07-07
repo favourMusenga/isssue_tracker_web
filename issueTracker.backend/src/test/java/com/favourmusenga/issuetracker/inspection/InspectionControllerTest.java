@@ -26,6 +26,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.*;
 import static org.hamcrest.Matchers.is;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -59,9 +60,11 @@ class InspectionControllerTest {
     @Test
     void shouldGetAllInspection() throws Exception {
         List<Inspection> inspections = new ArrayList<>(List.of(mockInspection));
-
+        AppUser mockAppUser = new AppUser
+                ("moses@gmail.com", "test1234", new UserName("moses",null, "banda"), new Role(1L, "hfhfh"));
+        when(appUserService.getUserByEmail(anyString())).thenReturn(mockAppUser);
         when(inspectionService.getAllInspections()).thenReturn(inspections);
-        mockMvc.perform(get("/api/inspection"))
+        mockMvc.perform(get("/api/inspection").param("email", "moses@gmail.com"))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", notNullValue()))

@@ -16,7 +16,6 @@ import javax.persistence.*;
 public class AppUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(nullable = false)
     private Long id;
 
     @Column(unique = true, nullable = false)

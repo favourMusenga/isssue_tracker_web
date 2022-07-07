@@ -13,6 +13,7 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -23,6 +24,7 @@ import static org.mockito.Mockito.when;
 @ExtendWith(MockitoExtension.class)
 class InspectionServiceTest {
 
+    private AppUser mockAppUser;
     @Mock
     private InspectionRepository inspectionRepository;
 
@@ -36,7 +38,7 @@ class InspectionServiceTest {
         Equipment equipment = new Equipment("Transformer","Amplify electricity",location);
 
 
-        AppUser mockAppUser = new AppUser
+        mockAppUser = new AppUser
                 ("moses@gmail.com", "test1234", new UserName("moses",null, "banda"), new Role(1L, "hfhfh"));
         mockInspection = new Inspection(1L,null,"12-08-2020",mockAppUser,new Status("work",null),equipment);
     }
@@ -68,4 +70,17 @@ class InspectionServiceTest {
         verify(inspectionRepository).findAll();
     }
 
+    @Test
+    void  shouldGetAllInspectionsByUser() {
+
+        underTest.getAllInspectionsByUser(mockAppUser);
+
+        ArgumentCaptor<AppUser> appUserArgumentCaptor = ArgumentCaptor.forClass(AppUser.class);
+
+        verify(inspectionRepository).findInspectionsByAppUser(appUserArgumentCaptor.capture());
+
+        AppUser expected = appUserArgumentCaptor.getValue();
+
+        assertThat(expected).isEqualTo(mockAppUser);
+    }
 }

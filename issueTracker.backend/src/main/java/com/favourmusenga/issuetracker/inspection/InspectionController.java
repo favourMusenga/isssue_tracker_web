@@ -5,7 +5,6 @@ import com.favourmusenga.issuetracker.appuser.AppUserService;
 import com.favourmusenga.issuetracker.equipment.Equipment;
 import com.favourmusenga.issuetracker.equipment.EquipmentService;
 import com.favourmusenga.issuetracker.shared.CustomResponseBody;
-import com.favourmusenga.issuetracker.shared.exceptions.CustomBadRequestException;
 import com.favourmusenga.issuetracker.shared.exceptions.CustomNotFoundException;
 import com.favourmusenga.issuetracker.status.Status;
 import com.favourmusenga.issuetracker.status.StatusService;
@@ -29,8 +28,12 @@ public class InspectionController  {
     private final StatusService statusService;
 
     @GetMapping
-    ResponseEntity<CustomResponseBody<List<Inspection>>> getAllInspection(){
-        return ResponseEntity.ok().body(new CustomResponseBody<>(HttpStatus.OK.value(), inspectionService.getAllInspections()));
+    ResponseEntity<CustomResponseBody<List<Inspection>>> getAllInspection(@RequestParam(name = "email") String email) throws CustomNotFoundException {
+        AppUser appUser = appUserService.getUserByEmail(email);
+        List<Inspection> inspections = appUser.getRole().getName().equalsIgnoreCase("supervisor")
+                ? inspectionService.getAllInspectionsByUser(appUser)
+                : inspectionService.getAllInspections();
+        return ResponseEntity.ok().body(new CustomResponseBody<>(HttpStatus.OK.value(), inspections));
     }
 
     @PostMapping
@@ -43,5 +46,14 @@ public class InspectionController  {
         inspectionService.saveInspection(new Inspection(inspectionRequest.getComment(),inspectionRequest.getDate(),appUser,status,equipment));
 
         return ResponseEntity.created(uri).build();
+    }
+
+    @PutMapping
+    ResponseEntity<?> updateInspection(@RequestBody Inspection inspection){
+        URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/Inspection").toUriString());
+
+        inspectionService.updateInspection(inspection);
+
+        return ResponseEntity.ok().build();
     }
 }
