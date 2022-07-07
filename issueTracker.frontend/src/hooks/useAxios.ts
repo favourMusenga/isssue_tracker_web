@@ -6,7 +6,7 @@ const useAxios = () => {
 	const { appState } = useContext(AppContext);
 	const { accessToken } = appState;
 	const axiosInstance = axios.create({
-		baseURL: 'https://zesco99-issue-tracker.herokuapp.com/',
+		baseURL: import.meta.env.VITE_API_URL,
 		headers: {
 			Authorization: `Bearer ${accessToken}`,
 		},

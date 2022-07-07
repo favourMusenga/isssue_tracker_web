@@ -44,7 +44,6 @@ public class InitController {
         locationService.saveNewLocation(new Location("main campus cbu, riverside",5,"kitwe"));
         locationService.saveNewLocation(new Location("main campus unza, great east road",6 ,"location"));
         locationService.saveNewLocation(new Location("Buntungwa, miseshi mindolo",3,"kitwe"));
-        locationService.saveNewLocation(new Location("Buntungwa, miseshi mindolo",3,"kitwe"));
         locationService.saveNewLocation(new Location("Hillcrest secondary school, mushili way",3,"livingstone"));
 
     }

@@ -19,9 +19,24 @@ import React, { useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import useAppContext from '../../hooks/useAppContext';
 import useAxios from '../../hooks/useAxios';
-import { IEquipment, IInspectionRequest, IStatus } from '../../type';
+import {
+	IEquipment,
+	IInspection,
+	IInspectionRequest,
+	IStatus,
+} from '../../type';
 
-const InspectionForm: React.FC = () => {
+interface InspectionFormProps {
+	selectedInspection: IInspection | null;
+	setSelectedInspection: React.Dispatch<
+		React.SetStateAction<IInspection | null>
+	>;
+}
+
+const InspectionForm: React.FC<InspectionFormProps> = ({
+	selectedInspection,
+	setSelectedInspection,
+}) => {
 	const {
 		register,
 		handleSubmit,
@@ -37,52 +52,76 @@ const InspectionForm: React.FC = () => {
 	const {
 		appState: { role, email },
 	} = useAppContext();
+	const [isNotOwner, setIsNotOwner] = useState<boolean>(false);
+
+	const onReset = () => {
+		reset();
+		setSelectedInspection(() => null);
+	};
 
 	const onSubmit = (values: IInspectionRequest) => {
 		return new Promise<void>((resolve) => {
-			axios
-				.post('/api/inspection', {
-					...values,
-					comment: values.comment?.trim() === '' ? null : values.comment,
-					userEmail: email,
-				})
-				.then(() => {
-					toast({
-						title: 'Inspection added',
-						description: 'You have added a new inspection successfully',
-						isClosable: true,
-						duration: 9000,
-						status: 'success',
-						position: 'bottom-right',
-					});
-					reset();
-					resolve();
-				})
-				.catch((err) => {
-					if (err instanceof AxiosError) {
-						const errorData = err.response?.data.error;
-						if (typeof errorData === 'string') {
+			if (selectedInspection) {
+				axios
+					.patch(`/api/inspection/${selectedInspection.id}`, {
+						...values,
+					})
+					.then(() => {});
+				toast({
+					title: 'Inspection added',
+					description: 'You have added a new inspection successfully',
+					isClosable: true,
+					duration: 9000,
+					status: 'success',
+					position: 'bottom-right',
+				});
+				onReset();
+				resolve();
+			} else {
+				axios
+					.post('/api/inspection', {
+						...values,
+						comment: values.comment?.trim() === '' ? null : values.comment,
+						userEmail: email,
+					})
+					.then(() => {
+						toast({
+							title: 'Inspection added',
+							description: 'You have added a new inspection successfully',
+							isClosable: true,
+							duration: 9000,
+							status: 'success',
+							position: 'bottom-right',
+						});
+						reset();
+						resolve();
+					})
+					.catch((err) => {
+						if (err instanceof AxiosError) {
+							const errorData = err.response?.data.error;
+							if (typeof errorData === 'string') {
+								toast({
+									title: 'Error',
+									description: errorData,
+									isClosable: true,
+									duration: 9000,
+									status: 'error',
+									position: 'bottom-right',
+								});
+							}
+						} else {
 							toast({
 								title: 'Error',
-								description: errorData,
+								description: 'something went wrong!!',
 								isClosable: true,
 								duration: 9000,
 								status: 'error',
 								position: 'bottom-right',
 							});
 						}
-					} else {
-						toast({
-							title: 'Error',
-							description: 'something went wrong!!',
-							isClosable: true,
-							duration: 9000,
-							status: 'error',
-							position: 'bottom-right',
-						});
-					}
-					resolve();
-				});
+						resolve();
+					});
+			}
 		});
 	};
 
@@ -93,6 +132,21 @@ const InspectionForm: React.FC = () => {
 
 		axios.get('/api/status').then((res) => setStatuses(() => res.data.data));
 	}, []);
+
+	useEffect(() => {
+		if (selectedInspection) {
+			setValue('date', selectedInspection.date);
+			setValue('comment', selectedInspection.comment);
+			setValue('equipmentId', selectedInspection.equipment?.id!);
+			setValue('userEmail', selectedInspection.appUser.email);
+			setValue('statusId', selectedInspection.status?.id!);
+
+			setIsNotOwner(() => email !== selectedInspection?.appUser.email);
+		} else {
+			setIsNotOwner(false);
+		}
+	}, [selectedInspection]);
+
 	return (
 		<Center
 			bg={useColorModeValue('white', 'gray.700')}
@@ -100,10 +154,12 @@ const InspectionForm: React.FC = () => {
 			padding={5}
 		>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<Heading>Add Equipment</Heading>
+				<Heading>
+					{selectedInspection ? 'Update Inspection' : 'Add Inspection'}
+				</Heading>
 				<SimpleGrid column="2" columnGap={4} rowGap={5} marginTop={3}>
 					<GridItem colSpan={colSpan}>
-						<FormControl isRequired>
+						<FormControl isDisabled={isNotOwner} isRequired>
 							<FormLabel htmlFor="date">date</FormLabel>
 							<Input
 								type="date"
@@ -117,7 +173,7 @@ const InspectionForm: React.FC = () => {
 						</FormControl>
 					</GridItem>
 					<GridItem colSpan={colSpan}>
-						<FormControl isRequired>
+						<FormControl isDisabled={isNotOwner} isRequired>
 							<FormLabel htmlFor="status">status</FormLabel>
 							<Select
 								id="status"
@@ -140,7 +196,7 @@ const InspectionForm: React.FC = () => {
 						</FormControl>
 					</GridItem>
 					<GridItem colSpan={2}>
-						<FormControl isRequired>
+						<FormControl isDisabled={isNotOwner} isRequired>
 							<FormLabel htmlFor="equipment">Equipment</FormLabel>
 							<Select
 								id="equipment"
@@ -158,14 +214,16 @@ const InspectionForm: React.FC = () => {
 						</FormControl>
 					</GridItem>
 					<GridItem colSpan={2}>
-						<FormControl isDisabled={role.toLowerCase() !== 'supervisor'}>
-							<FormLabel htmlFor="comment">Comment</FormLabel>
-							<Textarea
-								id="comment"
-								placeholder="Enter description..."
-								{...register('comment')}
-							/>
-						</FormControl>
+						{role.toLowerCase() === 'supervisor' && (
+							<FormControl>
+								<FormLabel htmlFor="comment">Comment</FormLabel>
+								<Textarea
+									id="comment"
+									placeholder="Enter description..."
+									{...register('comment')}
+								/>
+							</FormControl>
+						)}
 					</GridItem>
 					<GridItem colSpan={colSpan}>
 						<Button
@@ -174,11 +232,16 @@ const InspectionForm: React.FC = () => {
 							colorScheme={'whatsapp'}
 							isLoading={isSubmitting}
 						>
-							Add inspection
+							{selectedInspection ? 'update inspection' : 'Add inspection'}
 						</Button>
 					</GridItem>
 					<GridItem colSpan={colSpan}>
-						<Button type="reset" w={'full'} colorScheme={'red'}>
+						<Button
+							type="button"
+							onClick={onReset}
+							w={'full'}
+							colorScheme={'red'}
+						>
 							Clear
 						</Button>
 					</GridItem>

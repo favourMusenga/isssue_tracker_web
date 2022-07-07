@@ -12,15 +12,25 @@ import {
 } from '@chakra-ui/react';
 import React from 'react';
 import { useQuery } from 'react-query';
+import useAppContext from '../../hooks/useAppContext';
 import useAxios from '../../hooks/useAxios';
 import { IInspection } from '../../type';
 
-const InspectionTable: React.FC = () => {
+interface InspectionTableProps {
+	setSelectedInspection: React.Dispatch<
+		React.SetStateAction<IInspection | null>
+	>;
+}
+
+const InspectionTable: React.FC<InspectionTableProps> = (props) => {
 	let counter = 1;
 	const axios = useAxios();
+	const {
+		appState: { email },
+	} = useAppContext();
 
 	async function getInspection(): Promise<IInspection[]> {
-		const res = await axios.get('/api/inspection');
+		const res = await axios.get('/api/inspection', { params: { email } });
 		const resData = res.data.data;
 
 		return resData;
@@ -30,6 +40,10 @@ const InspectionTable: React.FC = () => {
 		'fetch-inspection',
 		getInspection
 	);
+
+	function onSelectInspection(inspection: IInspection) {
+		props.setSelectedInspection(() => inspection);
+	}
 	return (
 		<TableContainer
 			marginTop={'10'}
@@ -72,12 +86,19 @@ const InspectionTable: React.FC = () => {
 					{data &&
 						data.length > 0 &&
 						data.map((inspection) => (
-							<Tr key={`${inspection.id}`}>
+							<Tr
+								key={`${inspection.id}`}
+								style={{ cursor: 'pointer' }}
+								_hover={{
+									background: useColorModeValue('gray.200', 'gray.600'),
+								}}
+								onClick={() => onSelectInspection(inspection)}
+							>
 								<Td isNumeric>{counter++}</Td>
 								<Td>{`${inspection.appUser.userName.firstName} ${inspection.appUser.userName.lastName}`}</Td>
 								<Td>{inspection.equipment.name}</Td>
 								<Td>{inspection.status.name}</Td>
-								<Td>{inspection.comment}</Td>
+								<Td>{inspection.comment || ' - '}</Td>
 								<Td>{inspection.date}</Td>
 							</Tr>
 						))}

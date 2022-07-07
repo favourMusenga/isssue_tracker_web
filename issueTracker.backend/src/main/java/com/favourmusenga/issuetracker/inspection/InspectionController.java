@@ -9,6 +9,7 @@ import com.favourmusenga.issuetracker.shared.exceptions.CustomNotFoundException;
 import com.favourmusenga.issuetracker.status.Status;
 import com.favourmusenga.issuetracker.status.StatusService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
+@Slf4j
 @RequestMapping("/api/inspection")
 public class InspectionController  {
     private final InspectionService inspectionService;
@@ -29,10 +31,13 @@ public class InspectionController  {
 
     @GetMapping
     ResponseEntity<CustomResponseBody<List<Inspection>>> getAllInspection(@RequestParam(name = "email") String email) throws CustomNotFoundException {
+        log.warn(email);
         AppUser appUser = appUserService.getUserByEmail(email);
+        log.warn(appUser.toString());
+        log.warn(String.valueOf(appUser.getRole().getName().equalsIgnoreCase("supervisor")));
         List<Inspection> inspections = appUser.getRole().getName().equalsIgnoreCase("supervisor")
-                ? inspectionService.getAllInspectionsByUser(appUser)
-                : inspectionService.getAllInspections();
+                ? inspectionService.getAllInspections()
+                : inspectionService.getAllInspectionsByUser(appUser);
         return ResponseEntity.ok().body(new CustomResponseBody<>(HttpStatus.OK.value(), inspections));
     }
 
@@ -48,9 +53,15 @@ public class InspectionController  {
         return ResponseEntity.created(uri).build();
     }
 
-    @PutMapping
-    ResponseEntity<?> updateInspection(@RequestBody Inspection inspection){
+    @PutMapping("/{id}")
+    ResponseEntity<?> updateInspection(@PathVariable(name = "id") Long id, @RequestBody InspectionRequest inspectionRequest){
         URI uri = URI.create(ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/Inspection").toUriString());
+
+        Inspection inspection = inspectionService.getInspectionById(id);
+
+        inspection.setEquipment(equipmentService.getEquipmentById(inspectionRequest.getEquipmentId()));
+        inspection.setStatus(statusService.getStatusById(inspectionRequest.getStatusId()));
+        inspection.setComment(inspectionRequest.getComment());
 
         inspectionService.updateInspection(inspection);
 

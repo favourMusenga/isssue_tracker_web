@@ -74,7 +74,7 @@ const EquipmentTable: React.FC = () => {
 								<Td isNumeric>{counter++}</Td>
 								<Td>{equipment.name}</Td>
 								<Td>{equipment.location.physicalAddress}</Td>
-								<Td>{equipment.description}</Td>
+								<Td>{equipment.description || ' - '}</Td>
 							</Tr>
 						))}
 				</Tbody>
