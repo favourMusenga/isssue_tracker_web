@@ -66,17 +66,30 @@ const InspectionForm: React.FC<InspectionFormProps> = ({
 					.patch(`/api/inspection/${selectedInspection.id}`, {
 						...values,
 					})
-					.then(() => {});
-				toast({
-					title: 'Inspection added',
-					description: 'You have added a new inspection successfully',
-					isClosable: true,
-					duration: 9000,
-					status: 'success',
-					position: 'bottom-right',
-				});
-				onReset();
-				resolve();
+					.then(() => {
+						toast({
+							title: 'Inspection added',
+							description: 'You have added a new inspection successfully',
+							isClosable: true,
+							duration: 9000,
+							status: 'success',
+							position: 'bottom-right',
+						});
+						onReset();
+						resolve();
+					})
+					.catch((err) => {
+						toast({
+							title: 'Error',
+							description: 'something went wrong!!',
+							isClosable: true,
+							duration: 9000,
+							status: 'error',
+							position: 'bottom-right',
+						});
+
+						resolve();
+					});
 			} else {
 				axios
 					.post('/api/inspection', {
