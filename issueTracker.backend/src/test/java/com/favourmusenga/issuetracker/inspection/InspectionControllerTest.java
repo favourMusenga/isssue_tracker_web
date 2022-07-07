@@ -53,17 +53,18 @@ class InspectionControllerTest {
 
 
         AppUser mockAppUser = new AppUser
-                ("moses@gmail.com", "test1234", new UserName("moses",null, "banda"), new Role(1L, "hfhfh"));
+                ("moses@gmail.com", "test1234", new UserName("moses",null, "banda"), new Role(1L, "inspector"));
         mockInspection = new Inspection(1L,null,"12-08-2020",mockAppUser,new Status("work",null),equipment);
     }
 
     @Test
-    void shouldGetAllInspection() throws Exception {
+    void shouldGetAllInspectionByUser() throws Exception {
         List<Inspection> inspections = new ArrayList<>(List.of(mockInspection));
         AppUser mockAppUser = new AppUser
-                ("moses@gmail.com", "test1234", new UserName("moses",null, "banda"), new Role(1L, "hfhfh"));
+                ("moses@gmail.com", "test1234", new UserName("moses",null, "banda"), new Role(1L, "inspector"));
         when(appUserService.getUserByEmail(anyString())).thenReturn(mockAppUser);
         when(inspectionService.getAllInspections()).thenReturn(inspections);
+        when(inspectionService.getAllInspectionsByUser(mockAppUser)).thenReturn(inspections);
         mockMvc.perform(get("/api/inspection").param("email", "moses@gmail.com"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -91,4 +92,21 @@ class InspectionControllerTest {
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }
+    @Test
+    void shouldGetAllInspection() throws Exception {
+        List<Inspection> inspections = new ArrayList<>();
+        AppUser mockAppUser = new AppUser
+                ("moses@gmail.com", "test1234", new UserName("moses",null, "banda"), new Role(1L, "supervisor"));
+        when(appUserService.getUserByEmail(anyString())).thenReturn(mockAppUser);
+        when(inspectionService.getAllInspections()).thenReturn(inspections);
+
+        mockMvc.perform(get("/api/inspection").param("email", "moses@gmail.com"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", notNullValue()))
+                .andExpect(jsonPath("$.status", is(200)))
+                .andExpect(jsonPath("$.data").isArray())
+                .andExpect(jsonPath("$.data", hasSize(0)));
+    }
+
 }
